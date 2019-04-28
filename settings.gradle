@@ -1,0 +1,24 @@
+pluginManagement {
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "kotlin-multiplatform") {
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
+            }
+            if (requested.id.id == "kotlinx-serialization") {
+                useModule("org.jetbrains.kotlin:kotlin-serialization:${requested.version}")
+            }
+            if (requested.id.id == "multiplatform-dependency") {
+                useModule("com.vhrdina.multiplatform:multiplatform-dependency:${requested.version}")
+            }
+        }
+    }
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
+
+enableFeaturePreview('GRADLE_METADATA')
+rootProject.buildFileName = "build.gradle.kts"
+rootProject.name = "$lib_artifact_id"
