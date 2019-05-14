@@ -8,10 +8,6 @@ import com.vhrdina.multiplatform.network.model.RequestConfig
 import com.vhrdina.multiplatform.network.util.NetworkSerializer
 import io.einstore.einstore_sdk.model.SDKCheckRequest
 import io.einstore.einstore_sdk.model.SDKCheckResponse
-import io.ktor.client.engine.mock.MockEngine
-import io.ktor.client.engine.mock.MockHttpResponse
-import io.ktor.http.HttpStatusCode
-import kotlinx.coroutines.io.ByteReadChannel
 
 // TODO read Einstore sdk version from gradle.properties
 const val sdkVersion = "0.0.1"
@@ -19,7 +15,7 @@ const val sdkVersion = "0.0.1"
 class EinstoreSdk(val deviceInfo: DeviceInfo, val networkClient: NetworkClient) : IEinstoreSdk {
 
     init {
-        NetworkSerializer.kserializer.apply {
+        NetworkSerializer.apply {
             setMapper(SDKCheckRequest::class, SDKCheckRequest.serializer())
             setMapper(SDKCheckResponse::class, SDKCheckResponse.serializer())
         }
@@ -59,6 +55,9 @@ class EinstoreSdk(val deviceInfo: DeviceInfo, val networkClient: NetworkClient) 
                 println("Device data successfully received: $response")
                 response?.result?.let {
                     onSuccess(it)
+                }
+                response?.networkError?.let {
+                    onError(it)
                 }
             }
 

@@ -31,6 +31,8 @@ buildscript {
         maven { url = uri("https://dl.bintray.com/jetbrains/kotlin-native-dependencies") }
         maven { url = uri("https://kotlin.bintray.com/kotlinx") }
         maven { url = uri("https://kotlin.bintray.com/ktor") }
+        maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://jitpack.io") }
 
         google()
         jcenter()
@@ -53,6 +55,8 @@ allprojects {
         maven { url = uri("http://kotlin.bintray.com/kotlin-eap") }
         maven { url = uri("http://kotlin.bintray.com/kotlin-dev") }
         maven { url = uri("https://dl.bintray.com/kotlin/ktor") }
+        maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://jitpack.io") }
 
         google()
         jcenter()
@@ -128,8 +132,8 @@ kotlin {
                 implementation(Dependencies.Common.serialization_runtime)
                 implementation(Dependencies.Common.ktor_client_json)
                 implementation(Dependencies.Common.ktor_client_mock)
-                implementation("com.vhrdina.multiplatform:network:1.0.0")
-                implementation("com.vhrdina.multiplatform:util:1.0.0")
+                implementation("com.vhrdina.multiplatform:network:0.0.1")
+                implementation("com.vhrdina.multiplatform:util:0.0.1")
             }
         }
 
@@ -229,6 +233,19 @@ kotlin {
 //            pod("einstore-sdk", "0.0.1")
 //        }
 
+}
+
+listOf("bootstrap", "update").forEach { type ->
+    task<Exec>("carthage${type.capitalize()}") {
+        group = "carthage"
+        executable = "carthage"
+        args(
+            type,
+            "--platform", "iOS",
+            "--no-use-binaries",
+            "--cache-builds"
+        )
+    }
 }
 
 fun createFatFramework(config: FatFrameworkConfig) {
